@@ -8,7 +8,7 @@
 #'
 #' @examples
 get_records <- function(inspection_name = "Vespa-Watch",
-                        access_token = get_access_token()) {
+                        access_token = get_access_token(quiet = TRUE)) {
   # check input params
   assertthat::assert_that(assertthat::is.string(access_token))
   assertthat::assert_that(assertthat::is.string(inspection_name))

@@ -8,7 +8,7 @@
 #'
 #' @examples
 get_access_token <-
-  function(username = "phuybrechts", quiet = FALSE) {
+  function(username, quiet = FALSE) {
     # check input params
     assertthat::assert_that(assertthat::is.string(username))
     assertthat::assert_that(assertthat::is.flag(quiet))

@@ -20,10 +20,14 @@ get_records <- function(inspection_name = "Vespa-Watch",
     httr2::request("https://api.iasset.nl/getCustomInspections") %>%
     httr2::req_body_form(
       access_token = access_token,
-      inspection_ids[0] = inspection_fields$id
+      "inspection_ids[0]" = inspection_fields$id,
+      version = "9.7"
     )
-  records <- httr2::req_perform(get_records_request) %>%
-    httr2::resp_body_json(check_type = FALSE)
-
-  return(records)
+  # records_response <- httr2::req_perform(get_records_request) #%>%
+    # httr2::req_retry(max_tries = 3,
+    #                  max_seconds = 60)
+  # records <- httr2::resp_body_json(records_response, check_type = FALSE)
+  #
+  # records$returndata$data %>%
+  #   purrr::map_dfr(~.x)
 }

@@ -9,7 +9,9 @@
 #'
 #' @examples
 get_fields <- function(name = "Vespa-Watch", access_token = get_access_token()) {
+  # check input params
   assertthat::assert_that(assertthat::is.string(access_token))
+  # build a request and perform it
   get_custom_inspection_fields_request <-
     httr2::request("https://api.iasset.nl/getCustomInspectionFields/") %>%
     httr2::req_body_form(

@@ -3,4 +3,5 @@
 export("%>%")
 export(get_access_token)
 export(get_fields)
+export(get_records)
 importFrom(magrittr,"%>%")

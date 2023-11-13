@@ -32,4 +32,10 @@ get_records <- function(inspection_name = "Vespa-Watch",
   # parse the returned JSON
   records <- httr2::resp_body_json(records_response, check_type = FALSE)
 
+  records %>%
+    purrr::chuck("returndata") %>%
+    # get the data object for every element
+    purrr::map(~purrr::chuck(.x, "data")) %>%
+    # create a table per record
+    purrr::map_dfr(~purrr::discard(.x, function(x) all(x == ""))) %>%
 }

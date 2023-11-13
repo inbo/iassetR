@@ -47,4 +47,7 @@ get_records <- function(inspection_name = "Vespa-Watch",
       match(., inspection_fields$fields$id)
     ]) %>%
     janitor::clean_names()
+
+  # output a tibble with the requested records
+  return(records)
 }

@@ -12,7 +12,6 @@ RoxygenNote: 7.2.3
 Imports: 
     askpass,
     assertthat,
-    dplyr,
     httr2,
     magrittr,
     openssl,

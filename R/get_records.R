@@ -34,15 +34,17 @@ get_records <- function(inspection_name = "Vespa-Watch",
   records_response <- httr2::req_perform(get_records_request)
 
   # parse the returned JSON
-  records <- httr2::resp_body_json(records_response, check_type = FALSE)
-records %>%
-  purrr::chuck("returndata") %>%
-  # get the data object for every element
-  purrr::map(~ purrr::chuck(.x, "data")) %>%
-  # create a table per record
-  purrr::map_dfr(~ purrr::discard(.x, function(x) all(x == ""))) %>%
-  # rename field with values from `get_fields()`
-  dplyr::rename_with(~ inspection_fields$fields$fieldlabel[
-    match(., inspection_fields$fields$id)
-  ])
+  records <-
+    httr2::resp_body_json(records_response, check_type = FALSE) %>%
+    ## convert into tibble, rename fields with their labels
+    purrr::chuck("returndata") %>%
+    # get the data object for every element
+    purrr::map(~ purrr::chuck(.x, "data")) %>%
+    # create a table per record
+    purrr::map_dfr(~ purrr::discard(.x, function(x) all(x == ""))) %>%
+    # rename field with values from `get_fields()`
+    dplyr::rename_with(~ inspection_fields$fields$fieldlabel[
+      match(., inspection_fields$fields$id)
+    ]) %>%
+    janitor::clean_names()
 }

@@ -29,4 +29,7 @@ get_records <- function(inspection_name = "Vespa-Watch",
   # perform the request
   records_response <- httr2::req_perform(get_records_request)
 
+  # parse the returned JSON
+  records <- httr2::resp_body_json(records_response, check_type = FALSE)
+
 }

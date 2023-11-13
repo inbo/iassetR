@@ -38,4 +38,6 @@ get_records <- function(inspection_name = "Vespa-Watch",
     purrr::map(~purrr::chuck(.x, "data")) %>%
     # create a table per record
     purrr::map_dfr(~purrr::discard(.x, function(x) all(x == ""))) %>%
+    # rename field with values from `get_fields()`
+    dplyr::rename_with(lookup_field_name, dplyr::where(~lookup_field_name(.x, inspection_fields)))
 }

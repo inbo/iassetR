@@ -6,7 +6,7 @@
 #' @return Invisibily, an access token upon succes
 #' @export
 #'
-#' @examples
+#' @examples \dontrun{get_access_token("my_username")}
 get_access_token <-
   function(username, quiet = FALSE) {
     # check input params

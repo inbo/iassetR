@@ -14,6 +14,12 @@ get_records(
 
 \item{access_token}{access token from \code{get_access_token()}}
 }
+\value{
+a tibble with the records from the selected inspection.
+}
 \description{
 Title
+}
+\examples{
+\dontrun{get_records("Vespa-Watch")}
 }

@@ -17,3 +17,6 @@ Invisibily, an access token upon succes
 \description{
 Login to iAsset and retreive access token
 }
+\examples{
+\dontrun{get_access_token("my_username")}
+}

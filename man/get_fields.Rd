@@ -18,3 +18,6 @@ inspection
 \description{
 Get information about a custom inspection
 }
+\examples{
+\dontrun{get_fields("Vespa-Watch")}
+}

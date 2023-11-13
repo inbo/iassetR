@@ -12,9 +12,9 @@ RoxygenNote: 7.2.3
 Imports: 
     askpass,
     assertthat,
-    dplyr,
     httr2,
     magrittr,
+    openssl,
     purrr
 Suggests: 
     testthat (>= 3.0.0)

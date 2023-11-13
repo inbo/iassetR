@@ -3,10 +3,10 @@
 #' @param inspection_name name of the custom inspection to return records for
 #' @param access_token access token from `get_access_token()`
 #'
-#' @return
+#' @return a tibble with the records from the selected inspection.
 #' @export
 #'
-#' @examples
+#' @examples \dontrun{get_records("Vespa-Watch")}
 get_records <- function(inspection_name = "Vespa-Watch",
                         access_token = get_access_token(quiet = TRUE)) {
   # check input params

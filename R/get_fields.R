@@ -7,7 +7,7 @@
 #' inspection
 #' @export
 #'
-#' @examples
+#' @examples \dontrun{get_fields("Vespa-Watch")}
 get_fields <- function(name = "Vespa-Watch", access_token = get_access_token(quiet = TRUE)) {
   # check input params
   assertthat::assert_that(assertthat::is.string(access_token))

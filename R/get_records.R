@@ -13,8 +13,10 @@ get_records <- function(inspection_name = "Vespa-Watch",
   assertthat::assert_that(assertthat::is.string(access_token))
   assertthat::assert_that(assertthat::is.string(inspection_name))
   # get the inspection_id for the custom inspection
-  inspection_fields <- get_fields(access_token = access_token,
-                                  name = inspection_name)
+  inspection_fields <- get_fields(
+    access_token = access_token,
+    name = inspection_name
+  )
   # build a request and perform it
   get_records_request <-
     httr2::request("https://api.iasset.nl/getCustomInspections") %>%
@@ -24,8 +26,10 @@ get_records <- function(inspection_name = "Vespa-Watch",
       version = "9.7"
     ) %>%
     # retry 3 times if it fails, try for 60 seconds per attempt
-    httr2::req_retry(max_tries = 3,
-                     max_seconds = 60)
+    httr2::req_retry(
+      max_tries = 3,
+      max_seconds = 60
+    )
   # perform the request
   records_response <- httr2::req_perform(get_records_request)
 

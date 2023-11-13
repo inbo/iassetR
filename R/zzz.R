@@ -11,8 +11,8 @@
 #'
 #' @examples
 lookup_field_name <- function(field_id, inspection_fields) {
-  purrr::chuck("fields") %>%
-  dplyr::filter(id == .data$field_id) %>%
+  purrr::chuck(inspection_fields, "fields") %>%
+  dplyr::filter(id == field_id) %>%
     dplyr::pull("fieldlabel") %>%
     return()
 }

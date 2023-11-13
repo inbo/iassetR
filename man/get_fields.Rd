@@ -2,13 +2,19 @@
 % Please edit documentation in R/get_fields.R
 \name{get_fields}
 \alias{get_fields}
-\title{Title}
+\title{Get information about a custom inspection}
 \usage{
-get_fields(name, access_token = get_access_token())
+get_fields(name = "Vespa-Watch", access_token = get_access_token(quiet = TRUE))
 }
 \arguments{
-\item{access_token}{}
+\item{name}{name of the custom inspection to return fields for}
+
+\item{access_token}{access token from \code{get_access_token()}}
+}
+\value{
+a list object with the name, id and fields (data.frame) of the custom
+inspection
 }
 \description{
-Title
+Get information about a custom inspection
 }

@@ -22,12 +22,11 @@ get_records <- function(inspection_name = "Vespa-Watch",
       access_token = access_token,
       "inspection_ids[0]" = inspection_fields$id,
       version = "9.7"
-    )
-  # records_response <- httr2::req_perform(get_records_request) #%>%
-    # httr2::req_retry(max_tries = 3,
-    #                  max_seconds = 60)
-  # records <- httr2::resp_body_json(records_response, check_type = FALSE)
-  #
-  # records$returndata$data %>%
-  #   purrr::map_dfr(~.x)
+    ) %>%
+    # retry 3 times if it fails, try for 60 seconds per attempt
+    httr2::req_retry(max_tries = 3,
+                     max_seconds = 60)
+  # perform the request
+  records_response <- httr2::req_perform(get_records_request)
+
 }

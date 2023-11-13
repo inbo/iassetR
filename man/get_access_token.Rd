@@ -4,7 +4,7 @@
 \alias{get_access_token}
 \title{Login to iAsset and retreive access token}
 \usage{
-get_access_token(username = "phuybrechts", quiet = FALSE)
+get_access_token(username, quiet = FALSE)
 }
 \arguments{
 \item{username}{the iAsset username}
@@ -16,4 +16,7 @@ Invisibily, an access token upon succes
 }
 \description{
 Login to iAsset and retreive access token
+}
+\examples{
+\dontrun{get_access_token("my_username")}
 }

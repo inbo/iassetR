@@ -13,8 +13,10 @@ get_records <- function(inspection_name = "Vespa-Watch",
   assertthat::assert_that(assertthat::is.string(access_token))
   assertthat::assert_that(assertthat::is.string(inspection_name))
   # get the inspection_id for the custom inspection
-  inspection_fields <- get_fields(access_token = access_token,
-                                  name = inspection_name)
+  inspection_fields <- get_fields(
+    access_token = access_token,
+    name = inspection_name
+  )
   # build a request and perform it
   get_records_request <-
     httr2::request("https://api.iasset.nl/getCustomInspections") %>%
@@ -22,12 +24,30 @@ get_records <- function(inspection_name = "Vespa-Watch",
       access_token = access_token,
       "inspection_ids[0]" = inspection_fields$id,
       version = "9.7"
+    ) %>%
+    # retry 3 times if it fails, try for 60 seconds per attempt
+    httr2::req_retry(
+      max_tries = 3,
+      max_seconds = 60
     )
-  # records_response <- httr2::req_perform(get_records_request) #%>%
-    # httr2::req_retry(max_tries = 3,
-    #                  max_seconds = 60)
-  # records <- httr2::resp_body_json(records_response, check_type = FALSE)
-  #
-  # records$returndata$data %>%
-  #   purrr::map_dfr(~.x)
+  # perform the request
+  records_response <- httr2::req_perform(get_records_request)
+
+  # parse the returned JSON
+  records <-
+    httr2::resp_body_json(records_response, check_type = FALSE) %>%
+    ## convert into tibble, rename fields with their labels
+    purrr::chuck("returndata") %>%
+    # get the data object for every element
+    purrr::map(~ purrr::chuck(.x, "data")) %>%
+    # create a table per record
+    purrr::map_dfr(~ purrr::discard(.x, function(x) all(x == ""))) %>%
+    # rename field with values from `get_fields()`
+    dplyr::rename_with(~ inspection_fields$fields$fieldlabel[
+      match(., inspection_fields$fields$id)
+    ]) %>%
+    janitor::clean_names()
+
+  # output a tibble with the requested records
+  return(records)
 }

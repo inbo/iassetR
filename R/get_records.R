@@ -86,8 +86,10 @@ get_records <- function(inspection_name = "Vespa-Watch",
     dplyr::filter(fieldtype == "select") %>%
     dplyr::pull(id) %>%
     unique()
+
   ## Recode values from id to the value returned in inspection_fields
-  records %>%
+  records_recoded <-
+    records_no_lists %>%
     dplyr::mutate(
       dplyr::across(
         all_of(fields_type_select),
@@ -98,7 +100,10 @@ get_records <- function(inspection_name = "Vespa-Watch",
           )
         )
       )
+
     # rename field with values from `get_fields()`
+  records_renamed <-
+    records_recoded %>%
     dplyr::rename_with(~ inspection_fields$fields$fieldlabel[
       match(., inspection_fields$fields$id)
     ]) %>%

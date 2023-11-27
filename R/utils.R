@@ -1,3 +1,12 @@
+#' Recode based on field and field name
+#'
+#' To be used in across to recode values based on the `get_fields()` request
+#'
+#' @param field field to be recoded, tidyselect syntax
+#' @param field_name Character. Name of field to be recoded, within across `cur_column()`
+#' @param inspection_fields named list, output of `get_fields()`
+#'
+#' @return
 recode_by_field <- function(field,
                             field_name,
                             inspection_fields = get_fields(

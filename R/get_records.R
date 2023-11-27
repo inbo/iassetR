@@ -107,6 +107,8 @@ get_records <- function(inspection_name = "Vespa-Watch",
           )
         )
       )
+  ## Recode select_inspectors field
+  # TODO
 
     # rename field with values from `get_fields()`
   records_renamed <-

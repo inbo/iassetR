@@ -6,7 +6,9 @@
 #' @param field_name Character. Name of field to be recoded, within across `cur_column()`
 #' @param inspection_fields named list, output of `get_fields()`
 #'
-#' @return
+#' @return function to be used by `dplyr::rename_with()`
+#'
+#' @noRd
 recode_by_field <- function(field,
                             field_name = dplyr::cur_column(),
                             inspection_fields = get_fields(
@@ -15,7 +17,7 @@ recode_by_field <- function(field,
                             )) {
   dplyr::recode(field,
                 !!!dplyr::filter(inspection_fields$fields,
-                                 id == field_name)$options)
+                                 .data$id == field_name)$options)
 }
 
 #' Rename API columns with the label from `get_fields()`
@@ -27,6 +29,8 @@ recode_by_field <- function(field,
 #' @param inspection_fields named list, output of `get_fields()`
 #'
 #' @return character vector of matching fieldlabel for id + suffix
+#'
+#' @noRd
 rename_by_id <- function(id,
                          inspection_fields = get_fields(
                            access_token = get_access_token(),
@@ -38,8 +42,8 @@ rename_by_id <- function(id,
     suffix <- stringr::str_extract(id, "_[0-9]+") %>%
       stringr::str_replace_na(replacement = "")
 
-    dplyr::filter(inspection_fields$fields, id == pure_id) %>%
-      dplyr::pull(fieldlabel) %>%
+    dplyr::filter(inspection_fields$fields, .data$id == pure_id) %>%
+      dplyr::pull(.data$fieldlabel) %>%
       unique() %>%
       paste0(suffix)
   })

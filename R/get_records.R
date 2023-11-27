@@ -46,9 +46,12 @@ get_records <- function(inspection_name = "Vespa-Watch",
     purrr::map_dfr(~ purrr::discard(.x, function(x) all(x == ""))) %>%
     # drop value fields (paths to local images)
     dplyr::select(-dplyr::ends_with("_value")) %>%
-    # drop url suffix, now no longer neccesairy, breaks renaming later
+    # drop url suffix, now no longer necessary, breaks renaming later
     dplyr::rename_with(.fn = ~stringr::str_remove(.x, "_url"),
-                       .cols = dplyr::ends_with("_url"))
+                       .cols = dplyr::ends_with("_url")) %>%
+    # records are duplicated as multivalue fields get their own row, we can drop
+    # identical rows here
+    dplyr::distinct()
 
   # parse the API response so it's usable in analysis
 
@@ -57,7 +60,7 @@ get_records <- function(inspection_name = "Vespa-Watch",
   records %>%
     dplyr::select(dplyr::where(is.list)) %>%
     # calculate the length of every element
-    dplyr::mutate(dplyr::across(everything(),
+    dplyr::mutate(dplyr::across(dplyr::everything(),
                                 .names = "{col}_len",
                                 .fns = ~purrr::map_int(.x,\(x) length(x)))) %>%
 
@@ -90,8 +93,8 @@ get_records <- function(inspection_name = "Vespa-Watch",
   ## Select fields to be recoded based on their fieldtype
   fields_to_recode <-
     inspection_fields$fields %>%
-    dplyr::filter(fieldtype == "select" | fieldtype == "radio") %>%
-    dplyr::pull(id) %>%
+    dplyr::filter(.data$fieldtype == "select" | .data$fieldtype == "radio") %>%
+    dplyr::pull(.data$id) %>%
     unique()
 
   ## Recode values from id to the value returned in inspection_fields
@@ -99,7 +102,7 @@ get_records <- function(inspection_name = "Vespa-Watch",
     records_no_lists %>%
     dplyr::mutate(
       dplyr::across(
-        all_of(fields_to_recode),
+        dplyr::all_of(fields_to_recode),
         .names = "{.col}",
         ~recode_by_field(
           .x,

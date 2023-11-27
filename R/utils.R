@@ -39,7 +39,7 @@ rename_by_id <- function(id,
       stringr::str_replace_na(replacement = "")
 
     dplyr::filter(inspection_fields$fields, id == pure_id) %>%
-      pull(fieldlabel) %>%
+      dplyr::pull(fieldlabel) %>%
       unique() %>%
       paste0(suffix)
   })

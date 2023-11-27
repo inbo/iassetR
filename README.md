@@ -1,20 +1,20 @@
 
-# vespawatchr
+# iassetR
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/inbo/vespawatchr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/inbo/vespawatchr/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/inbo/iassetR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/inbo/iassetR/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of vespawatchr is to ...
+The goal of iassetR is to ...
 
 ## Installation
 
-You can install the development version of vespawatchr from [GitHub](https://github.com/) with:
+You can install the development version of iassetR from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("inbo/vespawatchr")
+devtools::install_github("inbo/iassetR")
 ```
 
 ## Example
@@ -22,7 +22,7 @@ devtools::install_github("inbo/vespawatchr")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(vespawatchr)
+library(iassetR)
 ## basic example code
 ```
 

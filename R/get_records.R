@@ -64,6 +64,22 @@ get_records <- function(inspection_name = "Vespa-Watch",
                        "these are currently not supported: ",
                        "Please create an issue on Github!")
     )
+  ### convert the list columns into character columns using purrr magic
+  records_no_lists <-
+    records %>%
+    dplyr::mutate(
+      dplyr::across(dplyr::where(is.list),
+        .names = "{.col}",
+        ~ purrr::map_chr(.x, function(element) {
+          purrr::pluck(
+            element,
+            1,
+            .default = NA
+          )
+        })
+      )
+    )
+
   ## Select fields to be recoded based on their fieldtype
   fields_type_select <-
     inspection_fields$fields %>%

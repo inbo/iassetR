@@ -41,7 +41,16 @@ get_records <- function(inspection_name = "Vespa-Watch",
     # get the data object for every element
     purrr::map(~ purrr::chuck(.x, "data")) %>%
     # create a table per record
-    purrr::map_dfr(~ purrr::discard(.x, function(x) all(x == ""))) %>%
+    purrr::map_dfr(~ purrr::discard(.x, function(x) all(x == "")))
+
+  # parse the API response so it's usable in analysis
+
+  ## Select fields to be recoded based on their fieldtype
+  fields_type_select <-
+    inspection_fields$fields %>%
+    dplyr::filter(fieldtype == "select") %>%
+    dplyr::pull(id) %>%
+    unique()
     # rename field with values from `get_fields()`
     dplyr::rename_with(~ inspection_fields$fields$fieldlabel[
       match(., inspection_fields$fields$id)

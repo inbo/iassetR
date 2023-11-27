@@ -119,5 +119,5 @@ get_records <- function(inspection_name = "Vespa-Watch",
     janitor::clean_names()
 
   # output a tibble with the requested records
-  return(records)
+  return(records_renamed)
 }

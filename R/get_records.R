@@ -40,7 +40,7 @@ get_records <- function(inspection_name = "Vespa-Watch",
     purrr::chuck("returndata") %>%
     # get the data object for every element
     purrr::map(~ list(
-      object_id = purrr::chuck(.x, "object_id"),
+      id = purrr::chuck(.x, "id"),
       purrr::chuck(.x, "data")
     )) %>%
     # flatten list

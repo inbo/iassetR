@@ -45,6 +45,25 @@ get_records <- function(inspection_name = "Vespa-Watch",
 
   # parse the API response so it's usable in analysis
 
+  ## Parse the list columns out to character columns
+  ### Check that none of the list columns have elements with length > 1
+  records %>%
+    dplyr::select(dplyr::where(is.list)) %>%
+    # calculate the length of every element
+    dplyr::mutate(dplyr::across(everything(),
+                                .names = "{col}_len",
+                                .fns = ~purrr::map_int(.x,\(x) length(x)))) %>%
+
+    dplyr::select(dplyr::ends_with("_len")) %>%
+    # check if any list column has elements with a length >= 1
+    dplyr::summarise_all(~max(.x) <= 1) %>%
+    purrr::map_lgl(~.x) %>%
+    all() %>%
+    assertthat::assert_that(
+      msg = glue::glue("The API returned multivalue columns of type select, ",
+                       "these are currently not supported: ",
+                       "Please create an issue on Github!")
+    )
   ## Select fields to be recoded based on their fieldtype
   fields_type_select <-
     inspection_fields$fields %>%

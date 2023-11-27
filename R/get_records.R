@@ -39,14 +39,16 @@ get_records <- function(inspection_name = "Vespa-Watch",
     ## convert into tibble
     purrr::chuck("returndata") %>%
     # get the data object for every element
-    purrr::map(~ list(
-      id = purrr::chuck(.x, "id"),
-      purrr::chuck(.x, "data")
-    )) %>%
+    purrr::map(~purrr::chuck(.x, "data")) %>%
     # flatten list
-    purrr::map(~ purrr::list_flatten(.x)) %>%
+    purrr::map(~purrr::list_flatten(.x)) %>%
     # create a table per record
-    purrr::map_dfr(~ purrr::discard(.x, function(x) all(x == "")))
+    purrr::map_dfr(~ purrr::discard(.x, function(x) all(x == ""))) %>%
+    # drop value fields (paths to local images)
+    dplyr::select(-dplyr::ends_with("_value")) %>%
+    # drop url suffix, now no longer neccesairy, breaks renaming later
+    dplyr::rename_with(.fn = ~stringr::str_remove(.x, "_url"),
+                       .cols = dplyr::ends_with("_url"))
 
   # parse the API response so it's usable in analysis
 

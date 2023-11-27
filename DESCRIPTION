@@ -22,4 +22,5 @@ Imports:
     janitor,
     magrittr,
     openssl,
-    purrr
+    purrr,
+    stringr

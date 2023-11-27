@@ -110,12 +110,12 @@ get_records <- function(inspection_name = "Vespa-Watch",
   ## Recode select_inspectors field
   # TODO
 
-    # rename field with values from `get_fields()`
+  # rename field with values from `get_fields()`
   records_renamed <-
     records_recoded %>%
-    dplyr::rename_with(~ inspection_fields$fields$fieldlabel[
-      match(., inspection_fields$fields$id)
-    ]) %>%
+    dplyr::rename_with(
+      ~rename_by_id(.x, inspection_fields)
+    ) %>%
     janitor::clean_names()
 
   # output a tibble with the requested records

@@ -39,7 +39,10 @@ get_records <- function(inspection_name = "Vespa-Watch",
     ## convert into tibble
     purrr::chuck("returndata") %>%
     # get the data object for every element
-    purrr::map(~ purrr::chuck(.x, "data")) %>%
+    purrr::map(~ list(
+      object_id = purrr::chuck(.x, "object_id"),
+      purrr::chuck(.x, "data")
+    )) %>%
     # flatten list
     purrr::map(~ purrr::list_flatten(.x)) %>%
     # create a table per record

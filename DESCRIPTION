@@ -18,6 +18,7 @@ Imports:
     askpass,
     assertthat,
     dplyr,
+    glue,
     httr2,
     janitor,
     magrittr,

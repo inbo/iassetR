@@ -59,7 +59,6 @@ get_records <- function(inspection_name = "Vespa-Watch",
         .names = "{.col}",
         ~recode_by_field(
           .x,
-          field_name = cur_column(),
           inspection_fields = inspection_fields
           )
         )

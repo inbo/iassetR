@@ -36,7 +36,7 @@ get_records <- function(inspection_name = "Vespa-Watch",
   # parse the returned JSON
   records <-
     httr2::resp_body_json(records_response, check_type = FALSE) %>%
-    ## convert into tibble, rename fields with their labels
+    ## convert into tibble
     purrr::chuck("returndata") %>%
     # get the data object for every element
     purrr::map(~ purrr::chuck(.x, "data")) %>%

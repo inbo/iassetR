@@ -88,9 +88,9 @@ get_records <- function(inspection_name = "Vespa-Watch",
     )
 
   ## Select fields to be recoded based on their fieldtype
-  fields_type_select <-
+  fields_to_recode <-
     inspection_fields$fields %>%
-    dplyr::filter(fieldtype == "select") %>%
+    dplyr::filter(fieldtype == "select" | fieldtype == "radio") %>%
     dplyr::pull(id) %>%
     unique()
 
@@ -99,7 +99,7 @@ get_records <- function(inspection_name = "Vespa-Watch",
     records_no_lists %>%
     dplyr::mutate(
       dplyr::across(
-        all_of(fields_type_select),
+        all_of(fields_to_recode),
         .names = "{.col}",
         ~recode_by_field(
           .x,

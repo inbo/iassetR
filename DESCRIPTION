@@ -1,5 +1,5 @@
 Package: iassetR
-Title: Use the iAsset API in R.
+Title: Use the iAsset API in R
 Version: 0.0.0.9000
 Authors@R: c(
     person("Pieter", "Huybrechts", email = "pieter.huybrechts@inbo.be",

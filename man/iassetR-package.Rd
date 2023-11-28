@@ -4,9 +4,9 @@
 \name{iassetR-package}
 \alias{iassetR}
 \alias{iassetR-package}
-\title{iassetR: Use the iAsset API in R.}
+\title{iassetR: Use the iAsset API in R}
 \description{
-
+This package is an interface to the REST api of iAsset.
 }
 \author{
 \strong{Maintainer}: Pieter Huybrechts \email{pieter.huybrechts@inbo.be} (\href{https://orcid.org/0000-0002-6658-6062}{ORCID})

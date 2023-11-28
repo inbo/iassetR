@@ -9,7 +9,7 @@ Authors@R: c(
             role = c("aut"),
             comment = c(ORCID = "0000-0003-2015-5731"))
             )
-Description:
+Description: This package is an interface to the REST api of iAsset.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

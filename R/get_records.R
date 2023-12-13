@@ -36,18 +36,91 @@ get_records <- function(inspection_name = "Vespa-Watch",
   # parse the returned JSON
   records <-
     httr2::resp_body_json(records_response, check_type = FALSE) %>%
-    ## convert into tibble, rename fields with their labels
+    ## convert into tibble
     purrr::chuck("returndata") %>%
     # get the data object for every element
-    purrr::map(~ purrr::chuck(.x, "data")) %>%
+    purrr::map(~purrr::chuck(.x, "data")) %>%
+    # flatten list
+    purrr::map(~purrr::list_flatten(.x)) %>%
     # create a table per record
     purrr::map_dfr(~ purrr::discard(.x, function(x) all(x == ""))) %>%
-    # rename field with values from `get_fields()`
-    dplyr::rename_with(~ inspection_fields$fields$fieldlabel[
-      match(., inspection_fields$fields$id)
-    ]) %>%
+    # drop value fields (paths to local images)
+    dplyr::select(-dplyr::ends_with("_value")) %>%
+    # drop url suffix, now no longer necessary, breaks renaming later
+    dplyr::rename_with(.fn = ~stringr::str_remove(.x, "_url"),
+                       .cols = dplyr::ends_with("_url")) %>%
+    # records are duplicated as multivalue fields get their own row, we can drop
+    # identical rows here
+    dplyr::distinct()
+
+  # parse the API response so it's usable in analysis
+
+  ## Parse the list columns out to character columns
+  ### Check that none of the list columns have elements with length > 1
+  records %>%
+    dplyr::select(dplyr::where(is.list)) %>%
+    # calculate the length of every element
+    dplyr::mutate(dplyr::across(dplyr::everything(),
+                                .names = "{col}_len",
+                                .fns = ~purrr::map_int(.x,\(x) length(x)))) %>%
+
+    dplyr::select(dplyr::ends_with("_len")) %>%
+    # check if any list column has elements with a length >= 1
+    dplyr::summarise_all(~max(.x) <= 1) %>%
+    purrr::map_lgl(~.x) %>%
+    all() %>%
+    assertthat::assert_that(
+      msg = glue::glue("The API returned multivalue columns of type select, ",
+                       "these are currently not supported: ",
+                       "Please create an issue on Github!")
+    )
+  ### convert the list columns into character columns using purrr magic
+  records_no_lists <-
+    records %>%
+    dplyr::mutate(
+      dplyr::across(dplyr::where(is.list),
+        .names = "{.col}",
+        ~ purrr::map_chr(.x, function(element) {
+          purrr::pluck(
+            element,
+            1,
+            .default = NA
+          )
+        })
+      )
+    )
+
+  ## Select fields to be recoded based on their fieldtype
+  fields_to_recode <-
+    inspection_fields$fields %>%
+    dplyr::filter(.data$fieldtype == "select" | .data$fieldtype == "radio") %>%
+    dplyr::pull(.data$id) %>%
+    unique()
+
+  ## Recode values from id to the value returned in inspection_fields
+  records_recoded <-
+    records_no_lists %>%
+    dplyr::mutate(
+      dplyr::across(
+        dplyr::all_of(fields_to_recode),
+        .names = "{.col}",
+        ~recode_by_field(
+          .x,
+          inspection_fields = inspection_fields
+          )
+        )
+      )
+  ## Recode select_inspectors field
+  # TODO
+
+  # rename field with values from `get_fields()`
+  records_renamed <-
+    records_recoded %>%
+    dplyr::rename_with(
+      ~rename_by_id(.x, inspection_fields)
+    ) %>%
     janitor::clean_names()
 
   # output a tibble with the requested records
-  return(records)
+  return(records_renamed)
 }

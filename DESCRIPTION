@@ -1,5 +1,5 @@
 Package: iassetR
-Title: What the Package Does (One Line, Title Case)
+Title: Use the iAsset API in R
 Version: 0.0.0.9000
 Authors@R: c(
     person("Pieter", "Huybrechts", email = "pieter.huybrechts@inbo.be",
@@ -9,7 +9,7 @@ Authors@R: c(
             role = c("aut"),
             comment = c(ORCID = "0000-0003-2015-5731"))
             )
-Description: What the package does (one paragraph).
+Description: This package is an interface to the REST api of iAsset.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -18,8 +18,11 @@ Imports:
     askpass,
     assertthat,
     dplyr,
+    glue,
     httr2,
     janitor,
     magrittr,
     openssl,
-    purrr
+    purrr,
+    rlang,
+    stringr

@@ -25,6 +25,9 @@ recode_by_field <- function(field,
 #' During rectangling, a suffix might be added to the column name before
 #' renaming. This suffix is to be retained.
 #'
+#' If the provided `id` is not found in the inspection fields, the value of `id` is returned
+#' without modification. No error or warning is raised in this case.
+#'
 #' @param id Column name as returned by the API.
 #' @param inspection_fields named list, output of `get_fields()`
 #'
@@ -42,9 +45,13 @@ rename_by_id <- function(id,
     suffix <- stringr::str_extract(id, "_[0-9]+") %>%
       stringr::str_replace_na(replacement = "")
 
-    dplyr::filter(inspection_fields$fields, .data$id == pure_id) %>%
-      dplyr::pull(.data$fieldlabel) %>%
-      unique() %>%
-      paste0(suffix)
+    if (pure_id %in% inspection_fields$fields$id){
+      dplyr::filter(inspection_fields$fields, .data$id == pure_id) %>%
+        dplyr::pull(.data$fieldlabel) %>%
+        unique() %>%
+        paste0(suffix)
+    }else{
+      id
+    }
   })
 }

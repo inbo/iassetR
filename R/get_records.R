@@ -38,8 +38,11 @@ get_records <- function(inspection_name = "Vespa-Watch",
     httr2::resp_body_json(records_response, check_type = FALSE) %>%
     ## convert into tibble
     purrr::chuck("returndata") %>%
-    # get the data object for every element
-    purrr::map(~purrr::chuck(.x, "data")) %>%
+    # get the metadata and data object for every element
+    purrr::map(~base::append(c("object_id" = .x$object_id,
+                               "inspection_id" = .x$inspection_id,
+                               "insp_order" = .x$insp_order),
+                purrr::chuck(.x, "data"))) %>%
     # flatten list
     purrr::map(~purrr::list_flatten(.x)) %>%
     # create a table per record

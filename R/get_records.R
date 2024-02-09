@@ -2,16 +2,20 @@
 #'
 #' @param inspection_name name of the custom inspection to return records for
 #' @param access_token access token from `get_access_token()`
+#' @param get_metadata Should the function return the meta data of all observations
 #'
 #' @return a tibble with the records from the selected inspection.
 #' @export
 #'
 #' @examples \dontrun{get_records("Vespa-Watch")}
 get_records <- function(inspection_name = "Vespa-Watch",
-                        access_token = get_access_token(quiet = TRUE)) {
+                        access_token = get_access_token(quiet = TRUE),
+                        get_metadata = FALSE) {
   # check input params
   assertthat::assert_that(assertthat::is.string(access_token))
   assertthat::assert_that(assertthat::is.string(inspection_name))
+  assertthat::assert_that(assertthat::is.flag(get_metadata))
+
   # get the inspection_id for the custom inspection
   inspection_fields <- get_fields(
     access_token = access_token,
@@ -38,13 +42,16 @@ get_records <- function(inspection_name = "Vespa-Watch",
     httr2::resp_body_json(records_response, check_type = FALSE) %>%
     ## convert into tibble
     purrr::chuck("returndata") %>%
-    # get the metadata and data object for every element
-    purrr::map(~base::append(c("object_id" = .x$object_id,
-                               "inspection_id" = .x$inspection_id,
-                               "insp_order" = .x$insp_order),
-                purrr::chuck(.x, "data"))) %>%
-    # flatten list
-    purrr::map(~purrr::list_flatten(.x)) %>%
+    # based on get_metadata
+    {if(get_metadata){
+      #flatten list to get the metadata and data object for every element on one level
+      purrr::map(.,~purrr::list_flatten(.x, name_spec = "{inner}"))
+     }else{
+      #or get the data object for every element
+      purrr::map(.,~purrr::chuck(.x, "data"))
+    }} %>%
+    # flatten list contained in data
+    purrr::map(~purrr::list_flatten(.x))%>%
     # create a table per record
     purrr::map_dfr(~ purrr::discard(.x, function(x) all(x == ""))) %>%
     # drop value fields (paths to local images)

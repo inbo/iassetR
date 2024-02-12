@@ -8,6 +8,13 @@
 \description{
 This package is an interface to the REST api of iAsset.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://inbo.github.io/iassetR/}
+}
+
+}
 \author{
 \strong{Maintainer}: Pieter Huybrechts \email{pieter.huybrechts@inbo.be} (\href{https://orcid.org/0000-0002-6658-6062}{ORCID})
 

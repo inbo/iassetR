@@ -6,13 +6,16 @@
 \usage{
 get_records(
   inspection_name = "Vespa-Watch",
-  access_token = get_access_token(quiet = TRUE)
+  access_token = get_access_token(quiet = TRUE),
+  get_metadata = FALSE
 )
 }
 \arguments{
 \item{inspection_name}{name of the custom inspection to return records for}
 
 \item{access_token}{access token from \code{get_access_token()}}
+
+\item{get_metadata}{Should the function return the meta data of all observations}
 }
 \value{
 a tibble with the records from the selected inspection.

@@ -46,7 +46,7 @@ get_records <- function(inspection_name = "Vespa-Watch",
     ## convert into tibble
     purrr::chuck("returndata") %>%
     # based on get_metadata
-    {
+    (function (.){
       if (get_metadata == "id") {
         # get the data with the id
         purrr::map(., ~ base::append(
@@ -60,7 +60,7 @@ get_records <- function(inspection_name = "Vespa-Watch",
         # or get the data object for every element
         purrr::map(., ~ purrr::chuck(.x, "data"))
       }
-    } %>%
+    }) %>%
     # flatten list contained in data
     purrr::map(~ purrr::list_flatten(.x)) %>%
     # create a table per record

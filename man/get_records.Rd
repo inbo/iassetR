@@ -2,23 +2,28 @@
 % Please edit documentation in R/get_records.R
 \name{get_records}
 \alias{get_records}
-\title{Title}
+\title{Get all records in a custom inspection}
 \usage{
 get_records(
   inspection_name = "Vespa-Watch",
-  access_token = get_access_token(quiet = TRUE)
+  access_token = get_access_token(quiet = TRUE),
+  get_metadata = c("id", "all")
 )
 }
 \arguments{
 \item{inspection_name}{name of the custom inspection to return records for}
 
 \item{access_token}{access token from \code{get_access_token()}}
+
+\item{get_metadata}{Indicates whether to include metadata in the returned
+data. Possible values are "id" (only include observation \code{insp_order}) and
+"all" (include all available metadata). Default is "id".}
 }
 \value{
 a tibble with the records from the selected inspection.
 }
 \description{
-Title
+Get all records in a custom inspection
 }
 \examples{
 \dontrun{get_records("Vespa-Watch")}

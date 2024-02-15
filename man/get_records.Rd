@@ -15,8 +15,8 @@ get_records(
 
 \item{access_token}{access token from \code{get_access_token()}}
 
-\item{get_metadata}{Indicates whether to include metadata in the returned data.
-Possible values are "id" (only include observation \code{insp_order}),
+\item{get_metadata}{Indicates whether to include metadata in the returned
+data. Possible values are "id" (only include observation \code{insp_order}),
 "none" (exclude all metadata), and "all" (include all available
 metadata). Default is "id".}
 }

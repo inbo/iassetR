@@ -2,8 +2,8 @@
 #'
 #' @param inspection_name name of the custom inspection to return records for
 #' @param access_token access token from `get_access_token()`
-#' @param get_metadata Indicates whether to include metadata in the returned data.
-#'  Possible values are "id" (only include observation `insp_order`),
+#' @param get_metadata Indicates whether to include metadata in the returned
+#'  data. Possible values are "id" (only include observation `insp_order`),
 #'  "none" (exclude all metadata), and "all" (include all available
 #'  metadata). Default is "id".
 #'
@@ -46,19 +46,19 @@ get_records <- function(inspection_name = "Vespa-Watch",
     ## convert into tibble
     purrr::chuck("returndata") %>%
     # based on get_metadata
-    (function (.){
+    (function(returndata) {
       if (get_metadata == "id") {
         # get the data with the id
-        purrr::map(., ~ base::append(
+        purrr::map(returndata, ~ base::append(
           c(insp_order = .x$insp_order),
           purrr::chuck(.x, "data")
         ))
       } else if (get_metadata == "all") {
         # flatten the metadata and data to have every element on one level
-        purrr::map(., ~ purrr::list_flatten(.x, name_spec = "{inner}"))
+        purrr::map(returndata, ~ purrr::list_flatten(.x, name_spec = "{inner}"))
       } else if (get_metadata == "none") {
         # or get the data object for every element
-        purrr::map(., ~ purrr::chuck(.x, "data"))
+        purrr::map(returndata, ~ purrr::chuck(.x, "data"))
       }
     }) %>%
     # flatten list contained in data

@@ -1,8 +1,11 @@
-#' Title
+#' Get all records in a custom inspection
 #'
 #' @param inspection_name name of the custom inspection to return records for
 #' @param access_token access token from `get_access_token()`
-#' @param get_metadata Should the function return the meta data of all observations
+#' @param get_metadata Indicates whether to include metadata in the returned data.
+#'  Possible values are "id" (only include observation `insp_order`),
+#'  "none" (exclude all metadata), and "all" (include all available
+#'  metadata). Default is "id".
 #'
 #' @return a tibble with the records from the selected inspection.
 #' @export
@@ -10,11 +13,11 @@
 #' @examples \dontrun{get_records("Vespa-Watch")}
 get_records <- function(inspection_name = "Vespa-Watch",
                         access_token = get_access_token(quiet = TRUE),
-                        get_metadata = FALSE) {
+                        get_metadata = c("id", "none", "all")) {
   # check input params
   assertthat::assert_that(assertthat::is.string(access_token))
   assertthat::assert_that(assertthat::is.string(inspection_name))
-  assertthat::assert_that(assertthat::is.flag(get_metadata))
+  get_metadata <- rlang::arg_match(get_metadata)
 
   # get the inspection_id for the custom inspection
   inspection_fields <- get_fields(
@@ -43,22 +46,32 @@ get_records <- function(inspection_name = "Vespa-Watch",
     ## convert into tibble
     purrr::chuck("returndata") %>%
     # based on get_metadata
-    {if(get_metadata){
-      #flatten list to get the metadata and data object for every element on one level
-      purrr::map(.,~purrr::list_flatten(.x, name_spec = "{inner}"))
-     }else{
-      #or get the data object for every element
-      purrr::map(.,~purrr::chuck(.x, "data"))
-    }} %>%
+    {
+      if (get_metadata == "id") {
+        # get the data with the id
+        purrr::map(., ~ base::append(
+          c(insp_order = .x$insp_order),
+          purrr::chuck(.x, "data")
+        ))
+      } else if (get_metadata == "all") {
+        # flatten the metadata and data to have every element on one level
+        purrr::map(., ~ purrr::list_flatten(.x, name_spec = "{inner}"))
+      } else if (get_metadata == "none") {
+        # or get the data object for every element
+        purrr::map(., ~ purrr::chuck(.x, "data"))
+      }
+    } %>%
     # flatten list contained in data
-    purrr::map(~purrr::list_flatten(.x))%>%
+    purrr::map(~ purrr::list_flatten(.x)) %>%
     # create a table per record
     purrr::map_dfr(~ purrr::discard(.x, function(x) all(x == ""))) %>%
     # drop value fields (paths to local images)
     dplyr::select(-dplyr::ends_with("_value")) %>%
     # drop url suffix, now no longer necessary, breaks renaming later
-    dplyr::rename_with(.fn = ~stringr::str_remove(.x, "_url"),
-                       .cols = dplyr::ends_with("_url")) %>%
+    dplyr::rename_with(
+      .fn = ~ stringr::str_remove(.x, "_url"),
+      .cols = dplyr::ends_with("_url")
+    ) %>%
     # records are duplicated as multivalue fields get their own row, we can drop
     # identical rows here
     dplyr::distinct()
@@ -71,18 +84,20 @@ get_records <- function(inspection_name = "Vespa-Watch",
     dplyr::select(dplyr::where(is.list)) %>%
     # calculate the length of every element
     dplyr::mutate(dplyr::across(dplyr::everything(),
-                                .names = "{col}_len",
-                                .fns = ~purrr::map_int(.x,\(x) length(x)))) %>%
-
+      .names = "{col}_len",
+      .fns = ~ purrr::map_int(.x, \(x) length(x))
+    )) %>%
     dplyr::select(dplyr::ends_with("_len")) %>%
     # check if any list column has elements with a length >= 1
-    dplyr::summarise_all(~max(.x) <= 1) %>%
+    dplyr::summarise_all(~ max(.x) <= 1) %>%
     purrr::map_lgl(~.x) %>%
     all() %>%
     assertthat::assert_that(
-      msg = glue::glue("The API returned multivalue columns of type select, ",
-                       "these are currently not supported: ",
-                       "Please create an issue on Github!")
+      msg = glue::glue(
+        "The API returned multivalue columns of type select, ",
+        "these are currently not supported: ",
+        "Please create an issue on Github!"
+      )
     )
   ### convert the list columns into character columns using purrr magic
   records_no_lists <-
@@ -114,12 +129,12 @@ get_records <- function(inspection_name = "Vespa-Watch",
       dplyr::across(
         dplyr::all_of(fields_to_recode),
         .names = "{.col}",
-        ~recode_by_field(
+        ~ recode_by_field(
           .x,
           inspection_fields = inspection_fields
-          )
         )
       )
+    )
   ## Recode select_inspectors field
   # TODO
 
@@ -127,7 +142,7 @@ get_records <- function(inspection_name = "Vespa-Watch",
   records_renamed <-
     records_recoded %>%
     dplyr::rename_with(
-      ~rename_by_id(.x, inspection_fields)
+      ~ rename_by_id(.x, inspection_fields)
     ) %>%
     janitor::clean_names()
 

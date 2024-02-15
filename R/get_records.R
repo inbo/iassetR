@@ -3,9 +3,8 @@
 #' @param inspection_name name of the custom inspection to return records for
 #' @param access_token access token from `get_access_token()`
 #' @param get_metadata Indicates whether to include metadata in the returned
-#'  data. Possible values are "id" (only include observation `insp_order`),
-#'  "none" (exclude all metadata), and "all" (include all available
-#'  metadata). Default is "id".
+#'  data. Possible values are "id" (only include observation `insp_order`) and
+#'  "all" (include all available metadata). Default is "id".
 #'
 #' @return a tibble with the records from the selected inspection.
 #' @export
@@ -13,7 +12,7 @@
 #' @examples \dontrun{get_records("Vespa-Watch")}
 get_records <- function(inspection_name = "Vespa-Watch",
                         access_token = get_access_token(quiet = TRUE),
-                        get_metadata = c("id", "none", "all")) {
+                        get_metadata = c("id", "all")) {
   # check input params
   assertthat::assert_that(assertthat::is.string(access_token))
   assertthat::assert_that(assertthat::is.string(inspection_name))
@@ -54,11 +53,8 @@ get_records <- function(inspection_name = "Vespa-Watch",
           purrr::chuck(.x, "data")
         ))
       } else if (get_metadata == "all") {
-        # flatten the metadata and data to have every element on one level
+        # or flatten the metadata and data to have every elements on one level
         purrr::map(returndata, ~ purrr::list_flatten(.x, name_spec = "{inner}"))
-      } else if (get_metadata == "none") {
-        # or get the data object for every element
-        purrr::map(returndata, ~ purrr::chuck(.x, "data"))
       }
     }) %>%
     # flatten list contained in data

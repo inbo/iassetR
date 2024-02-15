@@ -7,7 +7,7 @@
 get_records(
   inspection_name = "Vespa-Watch",
   access_token = get_access_token(quiet = TRUE),
-  get_metadata = c("id", "none", "all")
+  get_metadata = c("id", "all")
 )
 }
 \arguments{
@@ -16,9 +16,8 @@ get_records(
 \item{access_token}{access token from \code{get_access_token()}}
 
 \item{get_metadata}{Indicates whether to include metadata in the returned
-data. Possible values are "id" (only include observation \code{insp_order}),
-"none" (exclude all metadata), and "all" (include all available
-metadata). Default is "id".}
+data. Possible values are "id" (only include observation \code{insp_order}) and
+"all" (include all available metadata). Default is "id".}
 }
 \value{
 a tibble with the records from the selected inspection.

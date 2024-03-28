@@ -15,8 +15,17 @@ get_access_token <-
     # build a request and perform it
     login_request <-
       httr2::request(base_url = "https://api.iasset.nl/login/")
-    hash <- askpass::askpass() %>%
+
+    pwd <- Sys.getenv("iasset_password") %>%
       openssl::md5()
+
+    if(pwd == openssl::md5("")){
+      hash <- askpass::askpass() %>%
+        openssl::md5()
+    }else{
+      hash <- pwd
+    }
+
     login_response <- login_request %>%
       httr2::req_body_form(
         username = username,

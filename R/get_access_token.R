@@ -6,6 +6,13 @@
 #' @return Invisibily, an access token upon succes
 #' @export
 #'
+#' @details
+#' This function uses keyring to retrieve the password. If no password has been
+#' set using keyring you'll be prompted to enter your password using askpass.
+#' Setting the password using keyring should best be done interactivly
+#' (in the console) using `keyring::key_set("iasset_password")`.
+#' Keyring uses secret environment variables on GitHub Actions.
+#'
 #' @examples \dontrun{get_access_token("my_username")}
 get_access_token <-
   function(username, quiet = FALSE) {
@@ -15,6 +22,8 @@ get_access_token <-
     # build a request and perform it
     login_request <-
       httr2::request(base_url = "https://api.iasset.nl/login/")
+
+    Sys.setenv("iasset_password" = keyring::key_get("iasset_password"))
 
     pwd <- Sys.getenv("iasset_password") %>%
       openssl::md5()

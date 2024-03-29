@@ -21,6 +21,7 @@ Imports:
     glue,
     httr2,
     janitor,
+    keyring,
     magrittr,
     openssl,
     purrr,

@@ -24,22 +24,10 @@ get_access_token <-
     login_request <-
       httr2::request(base_url = "https://api.iasset.nl/login/")
 
-    Sys.setenv("iasset_password" = keyring::key_get("iasset_password"))
-
-    pwd <- Sys.getenv("iasset_password") %>%
-      openssl::md5()
-
-    if(pwd == openssl::md5("")){
-      hash <- askpass::askpass() %>%
-        openssl::md5()
-    }else{
-      hash <- pwd
-    }
-
     login_response <- login_request %>%
       httr2::req_body_form(
         username = username,
-        password = hash,
+        password = openssl::md5(keyring::key_get("iasset_password")),
         domain = "riparias",
         version = "9.7"
       ) %>%

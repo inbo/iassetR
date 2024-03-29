@@ -15,7 +15,9 @@
 #' Keyring uses secret environment variables on GitHub Actions.
 #'
 #' @import keyring
-#' @examples \dontrun{get_access_token("my_username")}
+#' @examples \dontrun{
+#' get_access_token("my_username")
+#' }
 get_access_token <-
   function(username, quiet = FALSE) {
     # check input params

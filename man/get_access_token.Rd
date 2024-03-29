@@ -17,6 +17,13 @@ Invisibily, an access token upon succes
 \description{
 Login to iAsset and retreive access token
 }
+\details{
+This function uses keyring to retrieve the password. If no password has been
+set using keyring you'll be prompted to enter your password using askpass.
+Setting the password using keyring should best be done interactivly
+(in the console) using \code{keyring::key_set("iasset_password")}.
+Keyring uses secret environment variables on GitHub Actions.
+}
 \examples{
 \dontrun{get_access_token("my_username")}
 }

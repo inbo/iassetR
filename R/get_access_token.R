@@ -20,6 +20,8 @@ get_access_token <-
     # check input params
     assertthat::assert_that(assertthat::is.string(username))
     assertthat::assert_that(assertthat::is.flag(quiet))
+    # check for keyring support
+    assertthat::assert_that(keyring::has_keyring_support())
     # build a request and perform it
     login_request <-
       httr2::request(base_url = "https://api.iasset.nl/login/")

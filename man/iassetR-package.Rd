@@ -12,6 +12,7 @@ This package is an interface to the REST api of iAsset.
 Useful links:
 \itemize{
   \item \url{https://inbo.github.io/iassetR/}
+  \item Report bugs at \url{https://github.com/inbo/iassetR/issues}
 }
 
 }
@@ -21,6 +22,7 @@ Useful links:
 Authors:
 \itemize{
   \item Pieter Huybrechts \email{pieter.huybrechts@inbo.be} (\href{https://orcid.org/0000-0002-6658-6062}{ORCID})
+  \item Diego Neve \email{diegoneve.26@gmail.com} (\href{https://orcid.org/0009-0003-2454-8521}{ORCID})
 }
 
 }

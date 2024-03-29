@@ -5,7 +5,9 @@ Authors@R: c(
     person("Pieter", "Huybrechts", , "pieter.huybrechts@inbo.be", role = "aut",
            comment = c(ORCID = "0000-0002-6658-6062")),
     person("Sander", "Devisscher", , "sander.devisscher@inbo.be", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0003-2015-5731"))
+           comment = c(ORCID = "0000-0003-2015-5731")),
+    person("Diego", "Neve", , "diegoneve.26@gmail.com", role = "aut",
+           comment = c(ORCID = "0009-0003-2454-8521"))
   )
 Description: This package is an interface to the REST api of iAsset.
 License: MIT + file LICENSE

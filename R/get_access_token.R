@@ -13,6 +13,7 @@
 #' (in the console) using `keyring::key_set("iasset_password")`.
 #' Keyring uses secret environment variables on GitHub Actions.
 #'
+#' @import keyring
 #' @examples \dontrun{get_access_token("my_username")}
 get_access_token <-
   function(username, quiet = FALSE) {

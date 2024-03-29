@@ -2,9 +2,9 @@ Package: iassetR
 Title: Use the iAsset API in R
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Pieter", "Huybrechts", , "pieter.huybrechts@inbo.be", role = c("aut", "cre"),
+    person("Pieter", "Huybrechts", , "pieter.huybrechts@inbo.be", role = "aut",
            comment = c(ORCID = "0000-0002-6658-6062")),
-    person("Sander", "Devisscher", , "sander.devisscher@inbo.be", role = "aut",
+    person("Sander", "Devisscher", , "sander.devisscher@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-2015-5731"))
   )
 Description: This package is an interface to the REST api of iAsset.

@@ -9,7 +9,7 @@
 #' @details
 #' This function uses keyring to retrieve the password. If no password has been
 #' set using keyring you'll be prompted to enter your password using askpass.
-#' Setting the password using keyring should best be done interactivly
+#' Setting the password using keyring should best be done interactively
 #' (in the console) using `keyring::key_set("iasset_password")`.
 #' Keyring uses secret environment variables on GitHub Actions.
 #'

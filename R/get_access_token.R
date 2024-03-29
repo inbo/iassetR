@@ -23,6 +23,16 @@ get_access_token <-
     assertthat::assert_that(assertthat::is.flag(quiet))
     # check for keyring support
     assertthat::assert_that(keyring::has_keyring_support())
+    # check that only one keyring is set
+    number_of_keyrings <- nrow(keyring::key_list(service = "iasset_password"))
+    assertthat::assert_that(number_of_keyrings <= 1,
+      msg = paste(
+        "iassetR currently only supports storing one iAsset account at a time.",
+        "Delete any other accounts using",
+        'keyring::key_delete(service = "iasset_password",',
+        'username = "username_to_delete")'
+      )
+    )
     # build a request and perform it
     login_request <-
       httr2::request(base_url = "https://api.iasset.nl/login/")

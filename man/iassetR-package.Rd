@@ -16,11 +16,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Pieter Huybrechts \email{pieter.huybrechts@inbo.be} (\href{https://orcid.org/0000-0002-6658-6062}{ORCID})
+\strong{Maintainer}: Sander Devisscher \email{sander.devisscher@inbo.be} (\href{https://orcid.org/0000-0003-2015-5731}{ORCID})
 
 Authors:
 \itemize{
-  \item Sander Devisscher \email{sander.devisscher@inbo.be} (\href{https://orcid.org/0000-0003-2015-5731}{ORCID})
+  \item Pieter Huybrechts \email{pieter.huybrechts@inbo.be} (\href{https://orcid.org/0000-0002-6658-6062}{ORCID})
 }
 
 }

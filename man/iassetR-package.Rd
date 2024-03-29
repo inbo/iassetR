@@ -12,6 +12,7 @@ This package is an interface to the REST api of iAsset.
 Useful links:
 \itemize{
   \item \url{https://inbo.github.io/iassetR/}
+  \item Report bugs at \url{https://github.com/inbo/iassetR/issues}
 }
 
 }

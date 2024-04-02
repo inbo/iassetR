@@ -6,7 +6,8 @@
 #'
 #' @export
 #'
-#' @examples get_username("iasset_password")
+#' @examples
+#' \dontrun{get_username("iasset_password")}
 get_username <- function(service = "iasset_password") {
   # check input params
   assertthat::assert_that(assertthat::is.string(service))

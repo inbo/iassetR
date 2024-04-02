@@ -16,5 +16,5 @@ A character vector of stored usernames for the service. NA if none.
 Get the username associated with the iAsset credentials in the system credentials store.
 }
 \examples{
-get_username("iasset_password")
+\dontrun{get_username("iasset_password")}
 }

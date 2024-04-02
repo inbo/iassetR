@@ -23,11 +23,14 @@ get_access_token <-
     # check input params
 
     assertthat::assert_that(assertthat::is.flag(quiet))
+
     # check for keyring support
     assertthat::assert_that(keyring::has_keyring_support())
+
     # check if a keyring exists
     iasset_keyring_exists <-
       "iasset_password" %in% dplyr::pull(keyring::key_list(), "service")
+
     ## check if a username is set
     iasset_username_missing <- !rlang::is_string(get_username())
 
@@ -60,6 +63,7 @@ get_access_token <-
 
     # fetch the username, we'll fetch the password in line to avoid storing it
     username <- get_username()
+
     # check that the fetched username is a string
     assertthat::assert_that(assertthat::is.string(username))
 
@@ -76,10 +80,12 @@ get_access_token <-
       ) %>%
       httr2::req_perform() %>%
       httr2::resp_body_json(check_type = FALSE)
+
     # print success
     if (!quiet) {
       message(login_response$returndata[[1]]$success_msg)
     }
+
     # return access token
     invisible(purrr::chuck(login_response, "returndata", 1, "access_token"))
   }

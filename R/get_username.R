@@ -4,6 +4,8 @@
 #'
 #' @return A character vector of stored usernames for the service. NA if none.
 #'
+#' @export
+#'
 #' @examples get_username("iasset_password")
 get_username <- function(service = "iasset_password") {
   # check input params

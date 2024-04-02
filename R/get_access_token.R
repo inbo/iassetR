@@ -37,6 +37,21 @@ get_access_token <-
       dplyr::pull("username") %>%
       is.na()
 
+    # prompt user for credentials if password or username is missing
+    if(!iasset_keyring_exists | iasset_username_missing){
+      message(
+        paste(
+          "iasset credentials are missing, please enter your credentials or",
+          "contact your domain admin to aquire some."
+        )
+      )
+      keyring::key_set(
+        service = "iasset_password",
+        username =
+          askpass::askpass(prompt = "Please enter your iasset username: ")
+        )
+    }
+
     # check that only one keyring is set
     number_of_keyrings <- nrow(keyring::key_list(service = "iasset_password"))
     assertthat::assert_that(number_of_keyrings <= 1,
@@ -47,6 +62,7 @@ get_access_token <-
         'username = "username_to_delete")'
       )
     )
+
     # build a request and perform it
     login_request <-
       httr2::request(base_url = "https://api.iasset.nl/login/")

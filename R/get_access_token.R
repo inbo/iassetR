@@ -19,7 +19,7 @@
 #' get_access_token("my_username")
 #' }
 get_access_token <-
-  function(username, quiet = FALSE) {
+  function(username = get_username(), quiet = FALSE) {
     # check input params
     assertthat::assert_that(assertthat::is.string(username))
     assertthat::assert_that(assertthat::is.flag(quiet))

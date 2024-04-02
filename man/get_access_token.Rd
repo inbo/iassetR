@@ -4,7 +4,7 @@
 \alias{get_access_token}
 \title{Login to iAsset and retreive access token}
 \usage{
-get_access_token(username, quiet = FALSE)
+get_access_token(username = get_username(), quiet = FALSE)
 }
 \arguments{
 \item{username}{the iAsset username}
@@ -20,10 +20,13 @@ Login to iAsset and retreive access token
 \details{
 This function uses keyring to retrieve the password. If no password has been
 set using keyring you'll be prompted to enter your password using askpass.
-Setting the password using keyring should best be done interactivly
-(in the console) using \code{keyring::key_set("iasset_password")}.
+Setting the password using keyring should best be done interactively
+(in the console) using
+\code{keyring::key_set("iasset_password", username = "my_username")}.
 Keyring uses secret environment variables on GitHub Actions.
 }
 \examples{
-\dontrun{get_access_token("my_username")}
+\dontrun{
+get_access_token("my_username")
+}
 }

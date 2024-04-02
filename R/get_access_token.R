@@ -30,6 +30,16 @@ get_access_token <-
       "iasset_password" %in% dplyr::pull(keyring::key_list(), "service")
     ## check if a username is set
     iasset_username_missing <- is.na(get_username())
+    # check that only one keyring is set
+    number_of_keyrings <- nrow(keyring::key_list(service = "iasset_password"))
+    assertthat::assert_that(number_of_keyrings <= 1,
+                            msg = paste(
+                              "iassetR currently only supports storing one iAsset account at a time.",
+                              "Delete any other accounts using",
+                              'keyring::key_delete(service = "iasset_password",',
+                              'username = "username_to_delete")'
+                            )
+    )
 
     # prompt user for credentials if password or username is missing
     if(!iasset_keyring_exists | iasset_username_missing){
@@ -47,16 +57,6 @@ get_access_token <-
         )
     }
 
-    # check that only one keyring is set
-    number_of_keyrings <- nrow(keyring::key_list(service = "iasset_password"))
-    assertthat::assert_that(number_of_keyrings <= 1,
-      msg = paste(
-        "iassetR currently only supports storing one iAsset account at a time.",
-        "Delete any other accounts using",
-        'keyring::key_delete(service = "iasset_password",',
-        'username = "username_to_delete")'
-      )
-    )
     # fetch the username, we'll fetch the password in line to avoid storing it
     username <- get_username()
     # check that the fetched username is a string

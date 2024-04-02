@@ -16,7 +16,7 @@ get_username <- function(service = "iasset_password") {
   assertthat::assert_that(keyring::has_keyring_support())
 
   # check that the queried service is in the keyring
-  assertthat::assert_that(service %in% keyring::key_list()$service,
+  assertthat::validate_that(service %in% keyring::key_list()$service,
     msg = glue::glue("{service} not found in keyring")
   )
 

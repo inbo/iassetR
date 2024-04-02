@@ -74,7 +74,8 @@ get_access_token <-
     login_response <- login_request %>%
       httr2::req_body_form(
         username = username,
-        password = openssl::md5(keyring::key_get("iasset_password")),
+        password = openssl::md5(keyring::key_get("iasset_password",
+                                                 username = username)),
         domain = "riparias",
         version = "9.7"
       ) %>%

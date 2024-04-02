@@ -25,6 +25,9 @@ get_access_token <-
     assertthat::assert_that(assertthat::is.flag(quiet))
     # check for keyring support
     assertthat::assert_that(keyring::has_keyring_support())
+    # check if a keyring exists
+    iasset_keyring_exists <-
+      "iasset_password" %in% dplyr::pull(keyring::key_list(), "service")
     # check that only one keyring is set
     number_of_keyrings <- nrow(keyring::key_list(service = "iasset_password"))
     assertthat::assert_that(number_of_keyrings <= 1,

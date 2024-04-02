@@ -21,7 +21,7 @@
 get_access_token <-
   function(username = get_username(), quiet = FALSE) {
     # check input params
-    assertthat::assert_that(assertthat::is.string(username))
+
     assertthat::assert_that(assertthat::is.flag(quiet))
     # check for keyring support
     assertthat::assert_that(keyring::has_keyring_support())
@@ -57,6 +57,10 @@ get_access_token <-
         'username = "username_to_delete")'
       )
     )
+    # fetch the username, we'll fetch the password in line to avoid storing it
+    username <- get_username()
+    # check that the fetched username is a string
+    assertthat::assert_that(assertthat::is.string(username))
 
     # build a request and perform it
     login_request <-

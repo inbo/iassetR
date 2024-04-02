@@ -36,7 +36,7 @@ get_access_token <-
       message(
         paste(
           "iasset credentials are missing, please enter your credentials or",
-          "contact your domain admin to aquire some."
+          "if you don't have any contact your domain admin."
         )
       )
       keyring::key_set(

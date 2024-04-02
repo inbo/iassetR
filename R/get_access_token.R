@@ -13,7 +13,6 @@
 #' credential store.
 #' Keyring uses secret environment variables on GitHub Actions.
 #'
-#' @import keyring
 #' @examples \dontrun{
 #' get_access_token("my_username")
 #' }

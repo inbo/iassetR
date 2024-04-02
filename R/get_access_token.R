@@ -28,6 +28,15 @@ get_access_token <-
     # check if a keyring exists
     iasset_keyring_exists <-
       "iasset_password" %in% dplyr::pull(keyring::key_list(), "service")
+    ## check if a username is set
+    iasset_username_missing <-
+      dplyr::filter(
+        keyring::key_list(),
+        service == "iasset_password"
+      ) %>%
+      dplyr::pull("username") %>%
+      is.na()
+
     # check that only one keyring is set
     number_of_keyrings <- nrow(keyring::key_list(service = "iasset_password"))
     assertthat::assert_that(number_of_keyrings <= 1,

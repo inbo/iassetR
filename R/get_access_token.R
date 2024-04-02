@@ -29,13 +29,7 @@ get_access_token <-
     iasset_keyring_exists <-
       "iasset_password" %in% dplyr::pull(keyring::key_list(), "service")
     ## check if a username is set
-    iasset_username_missing <-
-      dplyr::filter(
-        keyring::key_list(),
-        service == "iasset_password"
-      ) %>%
-      dplyr::pull("username") %>%
-      is.na()
+    iasset_username_missing <- is.na(get_username())
 
     # prompt user for credentials if password or username is missing
     if(!iasset_keyring_exists | iasset_username_missing){

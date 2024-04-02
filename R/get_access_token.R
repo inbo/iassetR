@@ -48,7 +48,8 @@ get_access_token <-
       keyring::key_set(
         service = "iasset_password",
         username =
-          askpass::askpass(prompt = "Please enter your iasset username: ")
+          askpass::askpass(prompt = "Please enter your iasset username: "),
+        prompt = "Please enter your iasset password: "
         )
     }
 

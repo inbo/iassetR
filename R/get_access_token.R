@@ -6,30 +6,88 @@
 #' @return Invisibily, an access token upon succes
 #' @export
 #'
-#' @examples \dontrun{get_access_token("my_username")}
+#' @details
+#' This function uses keyring to retrieve the password. If no password has been
+#' set using keyring you'll be prompted to enter your password using askpass.
+#' This password - username combination will then be stored in the system
+#' credential store.
+#' Keyring uses secret environment variables on GitHub Actions.
+#'
+#' @examples \dontrun{
+#' get_access_token("my_username")
+#' }
 get_access_token <-
-  function(username, quiet = FALSE) {
+  function(username = get_username(), quiet = FALSE) {
     # check input params
-    assertthat::assert_that(assertthat::is.string(username))
+
     assertthat::assert_that(assertthat::is.flag(quiet))
+
+    # check for keyring support
+    assertthat::assert_that(keyring::has_keyring_support())
+
+    # check if a keyring exists
+    iasset_keyring_exists <-
+      "iasset_password" %in% dplyr::pull(keyring::key_list(), "service")
+
+    ## check if a username is set
+    iasset_username_missing <- !rlang::is_string(get_username())
+
+    # check that only one keyring is set
+    number_of_keyrings <- nrow(keyring::key_list(service = "iasset_password"))
+    assertthat::assert_that(number_of_keyrings <= 1,
+                            msg = paste(
+                              "iassetR currently only supports storing one iAsset account at a time.",
+                              "Delete any other accounts using",
+                              'keyring::key_list(service = "iasset_password")$username',
+                              "to get a list of linked usernames &",
+                              'keyring::key_delete(service = "iasset_password",',
+                              'username = "username_to_delete")',
+                              "to delete the unneeded username"
+                            )
+    )
+
+    # prompt user for credentials if password or username is missing
+    if(!iasset_keyring_exists | iasset_username_missing){
+      message(
+        paste(
+          "iasset credentials are missing, please enter your credentials or",
+          "if you don't have any contact your domain admin."
+        )
+      )
+      keyring::key_set(
+        service = "iasset_password",
+        username =
+          askpass::askpass(prompt = "Please enter your iasset username: "),
+        prompt = "Please enter your iasset password: "
+        )
+    }
+
+    # fetch the username, we'll fetch the password in line to avoid storing it
+    username <- get_username()
+
+    # check that the fetched username is a string
+    assertthat::assert_that(assertthat::is.string(username))
+
     # build a request and perform it
     login_request <-
       httr2::request(base_url = "https://api.iasset.nl/login/")
-    hash <- askpass::askpass() %>%
-      openssl::md5()
+
     login_response <- login_request %>%
       httr2::req_body_form(
         username = username,
-        password = hash,
+        password = openssl::md5(keyring::key_get("iasset_password",
+                                                 username = username)),
         domain = "riparias",
         version = "9.7"
       ) %>%
       httr2::req_perform() %>%
       httr2::resp_body_json(check_type = FALSE)
+
     # print success
     if (!quiet) {
       message(login_response$returndata[[1]]$success_msg)
     }
+
     # return access token
     invisible(purrr::chuck(login_response, "returndata", 1, "access_token"))
   }

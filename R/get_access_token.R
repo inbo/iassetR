@@ -38,8 +38,11 @@ get_access_token <-
                             msg = paste(
                               "iassetR currently only supports storing one iAsset account at a time.",
                               "Delete any other accounts using",
+                              'keyring::key_list(service = "iasset_password")$username',
+                              "to get a list of linked usernames &",
                               'keyring::key_delete(service = "iasset_password",',
-                              'username = "username_to_delete")'
+                              'username = "username_to_delete")',
+                              "to delete the unneeded username"
                             )
     )
 

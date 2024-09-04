@@ -1,36 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://inbo.github.io/iassetR/404.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/iassetR/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/iassetR/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/iassetR/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/iassetR/index.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/iassetR/reference/get_access_token.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/iassetR/reference/get_fields.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/iassetR/reference/get_records.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/iassetR/reference/iassetR-package.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/iassetR/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/iassetR/reference/pipe.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://inbo.github.io/iassetR/404.html</loc></url>
+<url><loc>https://inbo.github.io/iassetR/LICENSE-text.html</loc></url>
+<url><loc>https://inbo.github.io/iassetR/LICENSE.html</loc></url>
+<url><loc>https://inbo.github.io/iassetR/authors.html</loc></url>
+<url><loc>https://inbo.github.io/iassetR/index.html</loc></url>
+<url><loc>https://inbo.github.io/iassetR/reference/get_access_token.html</loc></url>
+<url><loc>https://inbo.github.io/iassetR/reference/get_fields.html</loc></url>
+<url><loc>https://inbo.github.io/iassetR/reference/get_records.html</loc></url>
+<url><loc>https://inbo.github.io/iassetR/reference/iassetR-package.html</loc></url>
+<url><loc>https://inbo.github.io/iassetR/reference/index.html</loc></url>
+<url><loc>https://inbo.github.io/iassetR/reference/pipe.html</loc></url>
 </urlset>
+
